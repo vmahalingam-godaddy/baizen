@@ -11,6 +11,11 @@
   (testing "s-transaction-detail"
     (let [transaction-detail-line ["16" "115" "10000000" "S" "5000000" "4000000" "1000000" "DD1620" "DASD1234" "DEALER PAYMENTS"]
           dissected (parse-transaction transaction-detail-line)]
+      (is (= "16" (:record-code dissected)))))
+
+  (testing "v-transaction-detail"
+    (let [transaction-detail-line ["16" "399" "080" "V" "240116" "" "" "" "MISCELLANEOUS CREDIT~8041713937~ELAVON MRCH SVCS~/"]
+          dissected (parse-transaction transaction-detail-line)]
       (is (= "16" (:record-code dissected))))))
 
 (def bai-group
