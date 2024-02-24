@@ -14,7 +14,7 @@
       (is (= "16" (:record-code dissected)))))
 
   (testing "v-transaction-detail"
-    (let [transaction-detail-line ["16" "399" "080" "V" "240116" "" "" "" "MISCELLANEOUS CREDIT~8041713937~ELAVON MRCH SVCS~/"]
+    (let [transaction-detail-line ["16" "399" "080" "V" "240116" "" "" "" "MISCELLANEOUS CREDIT~ZZZZZZZZZZ~XXXXX XXXX XXXX~"]
           dissected (parse-transaction transaction-detail-line)]
       (is (= "16" (:record-code dissected))))))
 
