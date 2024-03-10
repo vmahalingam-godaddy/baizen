@@ -6,6 +6,7 @@
             [baizen.formats.account-identifier :refer :all]
             [baizen.formats.s-transaction-detail :refer :all]
             [baizen.formats.transaction-detail :refer :all]
+            [baizen.formats.v-transaction-detail :refer :all]
             [baizen.formats.account-trailer :refer :all]
             [baizen.formats.group-trailer :refer :all]
             [baizen.formats.file-trailer :refer :all])
@@ -14,6 +15,7 @@
            [baizen.formats.account_identifier AccountIdentifier]
            [baizen.formats.s_transaction_detail STransactionDetail]
            [baizen.formats.transaction_detail TransactionDetail]
+           [baizen.formats.v_transaction_detail VTransactionDetail]
            [baizen.formats.account_trailer AccountTrailer]
            [baizen.formats.group_trailer GroupTrailer]
            [baizen.formats.file_trailer FileTrailer]))
@@ -21,6 +23,7 @@
 (defn parse-transaction [line]
   (match [line]
          [(["16" _ _ "S" & r] :seq)] (dissect (STransactionDetail. line))
+         [(["16" _ _ "V" & r] :seq)] (dissect (VTransactionDetail. line))
          [(["16" & r] :seq)] (dissect (TransactionDetail. line))
          :else line))
 
