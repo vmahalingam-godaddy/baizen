@@ -131,6 +131,24 @@ and a [Pull Request](https://github.com/testdouble/baizen/pulls) if you have one
 
 More documentation can be found on the [wiki](https://github.com/testdouble/baizen/wiki).
 
+## Release
+
+Prerequisites:
+- Ensure ~/.lein/profiles.clj has the following to use poynt nexus repository for deployment:
+  ```
+  {:user {:repositories [["snapshots" {:url "https://nexus.poynt.com/content/repositories/snapshots"
+                               :username "xxxx" :password "xxxx"}]
+                 ["releases" {:url "https://nexus.poynt.com/content/repositories/releases"
+                               :username "xxxx" :password "xxxx"  }]] }}
+  ```
+
+
+1. Remove SNAPSHOT and update to required version
+2. Build and deploy jar to poynt nexus repository
+   ```
+   lein deploy
+   ```
+
 ## License
 
 Copyright © 2014 Test Double
