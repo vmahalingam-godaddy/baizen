@@ -1,0 +1,73 @@
+name: Setup maven
+description: "Retrieve Artifactory credentials and create settings.xml with those credentials."
+
+inputs:
+  jf-url:
+    description: "JFrog Artifactory URL"
+    default: "https://gdartifactory1.jfrog.io"
+  oidc-provider-name:
+    description: "OIDC provider name"
+    default: "github"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Authenticate with Artifactory via OIDC
+      uses: jfrog/setup-jfrog-cli@751c204e8e1d3fe053e30218a2143ab4fe100d95 # v4.6.0
+      id: jfrog
+      env:
+        JF_URL: ${{ inputs.jf-url }}
+      with:
+        oidc-provider-name: ${{ inputs.oidc-provider-name }}
+    - name: Apply maven settings
+      uses: whelk-io/maven-settings-xml-action@v22
+      with:
+        repositories: >
+          [
+            {
+              "id": "artifactory",
+              "url": "https://gdartifactory1.jfrog.io/artifactory/java-virt",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true"
+              }
+            }
+          ]
+        plugin_repositories: >
+          [
+            {
+              "id": "artifactory",
+              "url": "https://gdartifactory1.jfrog.io/artifactory/java-virt",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true"
+              }
+            }
+          ]
+        servers: |
+          [
+            {
+              "id": "artifactory",
+              "username": "${{ steps.jfrog.outputs.oidc-user }}",
+              "password": "${{ steps.jfrog.outputs.oidc-token }}"
+            }
+          ]
+        mirrors: >
+          [
+            {
+              "id": "artifactory",
+              "mirrorOf": "*",
+              "url": "https://gdartifactory1.jfrog.io/artifactory/java-virt"
+            }
+          ]
+    - name: Cache local Maven repository
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-

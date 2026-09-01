@@ -14,5 +14,4 @@
              :1.8 {:resource-paths ["test-resources"]
                    :dependencies [[org.clojure/clojure "1.8.0"]]}}
   :aliases {"test-all-profiles" ["with-profile" "dev:1.6:1.7:1.8" "test"]}
-  :repositories [["snapshots" "https://nexus.poynt.com/content/repositories/snapshots"]
-                 ["releases" "https://nexus.poynt.com/content/repositories/releases"]])
+  :repositories [["artifactory" "https://gdartifactory1.jfrog.io/artifactory/java-virt"]])
