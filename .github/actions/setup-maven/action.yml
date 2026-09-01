@@ -19,6 +19,11 @@ runs:
         JF_URL: ${{ inputs.jf-url }}
       with:
         oidc-provider-name: ${{ inputs.oidc-provider-name }}
+    - name: Export Artifactory credentials
+      shell: bash
+      run: |
+        echo "ARTIFACTORY_USER=${{ steps.jfrog.outputs.oidc-user }}" >> "$GITHUB_ENV"
+        echo "ARTIFACTORY_TOKEN=${{ steps.jfrog.outputs.oidc-token }}" >> "$GITHUB_ENV"
     - name: Apply maven settings
       uses: whelk-io/maven-settings-xml-action@v22
       with:

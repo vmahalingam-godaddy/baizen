@@ -21,8 +21,15 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
       - uses: ./.github/actions/setup-maven
-      - name: Build and Test
-        run: mvn clean verify
-      - name: Deploy to Artifactory
+      - name: Set up Clojure
+        uses: DeLaGuardo/setup-clojure@13.6.1
+        with:
+          lein: 2.11.2
+      - name: Run Clojure test suite
+        run: lein test-all-profiles
+      - name: Build and Deploy
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: mvn deploy -DskipTests
+        run: mvn clean deploy -DskipTests
+      - name: Build
+        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
+        run: mvn clean verify
