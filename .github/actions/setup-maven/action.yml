@@ -59,6 +59,11 @@ runs:
               "id": "artifactory",
               "username": "${{ steps.jfrog.outputs.oidc-user }}",
               "password": "${{ steps.jfrog.outputs.oidc-token }}"
+            },
+            {
+              "id": "central",
+              "username": "${{ steps.jfrog.outputs.oidc-user }}",
+              "password": "${{ steps.jfrog.outputs.oidc-token }}"
             }
           ]
         mirrors: >

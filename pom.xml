@@ -45,7 +45,7 @@
   </build>
   <repositories>
     <repository>
-      <id>artifactory</id>
+      <id>central</id>
       <url>https://gdartifactory1.jfrog.io/artifactory/java-virt</url>
       <snapshots>
         <enabled>true</enabled>
@@ -55,6 +55,18 @@
       </releases>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://gdartifactory1.jfrog.io/artifactory/java-virt</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
