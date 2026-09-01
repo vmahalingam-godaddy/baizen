@@ -1,0 +1,46 @@
+name: Verify Artifactory OIDC write access
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate with Artifactory via OIDC
+        uses: jfrog/setup-jfrog-cli@751c204e8e1d3fe053e30218a2143ab4fe100d95 # v4.6.0
+        id: jfrog
+        env:
+          JF_URL: https://gdartifactory1.jfrog.io
+        with:
+          oidc-provider-name: github
+      - name: Report OIDC identity
+        run: |
+          if [ -z "${{ steps.jfrog.outputs.oidc-user }}" ]; then
+            echo "OIDC auth FAILED - no user returned"
+            exit 1
+          fi
+          echo "OIDC auth succeeded as user: ${{ steps.jfrog.outputs.oidc-user }}"
+      - name: Test write access (scratch path, self-cleaning)
+        env:
+          ARTIFACTORY_USER: ${{ steps.jfrog.outputs.oidc-user }}
+          ARTIFACTORY_TOKEN: ${{ steps.jfrog.outputs.oidc-token }}
+        run: |
+          set -e
+          for REPO in gradle-gdcorp-commerce-snapshots-local gradle-gdcorp-commerce-releases-local; do
+            URL="https://gdartifactory1.jfrog.io/artifactory/${REPO}/_oidc-write-test/baizen-verify-${GITHUB_RUN_ID}.txt"
+            echo "Testing write to ${REPO}..."
+            STATUS=$(curl -s -o /tmp/put-resp.txt -w "%{http_code}" -u "${ARTIFACTORY_USER}:${ARTIFACTORY_TOKEN}" -X PUT "$URL" -d "oidc write verification, safe to delete")
+            echo "PUT status: ${STATUS}"
+            cat /tmp/put-resp.txt
+            if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 300 ]; then
+              echo "WRITE OK for ${REPO}"
+              curl -s -o /dev/null -w "Cleanup DELETE status: %{http_code}\n" -u "${ARTIFACTORY_USER}:${ARTIFACTORY_TOKEN}" -X DELETE "$URL"
+            else
+              echo "WRITE FAILED for ${REPO} (status ${STATUS})"
+            fi
+          done
