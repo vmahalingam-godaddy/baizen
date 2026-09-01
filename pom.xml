@@ -25,6 +25,9 @@
     <testSourceDirectory>test</testSourceDirectory>
     <resources>
       <resource>
+        <directory>src</directory>
+      </resource>
+      <resource>
         <directory>resources</directory>
       </resource>
     </resources>
@@ -43,37 +46,7 @@
   <repositories>
     <repository>
       <id>central</id>
-      <url>https://repo1.maven.org/maven2/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>clojars</id>
-      <url>https://repo.clojars.org/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>snapshots</id>
-      <url>https://nexus.poynt.com/content/repositories/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>releases</id>
-      <url>https://nexus.poynt.com/content/repositories/releases</url>
+      <url>https://gdartifactory1.jfrog.io/artifactory/java-virt</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -82,6 +55,32 @@
       </releases>
     </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://gdartifactory1.jfrog.io/artifactory/java-virt</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>artifactory</id>
+      <name>Artifactory release repository</name>
+      <url>https://gdartifactory1.jfrog.io/artifactory/gradle-gdcorp-commerce-releases-local/</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>artifactory</id>
+      <name>Artifactory snapshot repository</name>
+      <url>https://gdartifactory1.jfrog.io/artifactory/gradle-gdcorp-commerce-snapshots-local/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <dependencyManagement>
     <dependencies/>
   </dependencyManagement>

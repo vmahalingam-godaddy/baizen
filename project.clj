@@ -14,5 +14,10 @@
              :1.8 {:resource-paths ["test-resources"]
                    :dependencies [[org.clojure/clojure "1.8.0"]]}}
   :aliases {"test-all-profiles" ["with-profile" "dev:1.6:1.7:1.8" "test"]}
-  :repositories [["snapshots" "https://nexus.poynt.com/content/repositories/snapshots"]
-                 ["releases" "https://nexus.poynt.com/content/repositories/releases"]])
+  :repositories ^:replace [["artifactory" {:url "https://gdartifactory1.jfrog.io/artifactory/java-virt"
+                                            :username :env/artifactory_user
+                                            :password :env/artifactory_token}]]
+  :mirrors {#"^.*$" {:name "artifactory"
+                      :url "https://gdartifactory1.jfrog.io/artifactory/java-virt"
+                      :username :env/artifactory_user
+                      :password :env/artifactory_token}})
